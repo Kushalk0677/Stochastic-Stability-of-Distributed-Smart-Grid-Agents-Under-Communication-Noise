@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor, as_completed
-import multiprocessing  # ADDED
+import multiprocessing
 
 # =====================================================
 # PARAMETERS
@@ -41,7 +41,7 @@ def theoretical_rho(alpha, p):
 
 def single_run(task):
 
-    N, alpha, p, seed_int = task  # seed is now integer
+    N, alpha, p, seed_int = task 
     rng = np.random.default_rng(seed_int)
 
     A = rng.random((N, N)) < connection_prob
@@ -83,13 +83,12 @@ def single_run(task):
     return (N, alpha, p, steady_mean)
 
 
-# =====================================================
-# MAIN EXECUTION BLOCK (CRITICAL FIX)
-# =====================================================
+
+# MAIN EXECUTION BLOCK
 
 if __name__ == "__main__":
 
-    multiprocessing.freeze_support()  # REQUIRED on Windows
+    multiprocessing.freeze_support() 
 
     # =====================================================
     # BUILD TASK LIST
@@ -106,7 +105,7 @@ if __name__ == "__main__":
         for alpha in alpha_values:
             for p in p_values:
                 for run in range(num_runs):
-                    # convert SeedSequence → integer
+                    
                     seed_int = child_seeds[seed_idx].generate_state(1)[0]
                     tasks.append((N, alpha, p, seed_int))
                     seed_idx += 1
@@ -212,3 +211,4 @@ if __name__ == "__main__":
             plt.close()
 
     print("All figures generated.")
+
